@@ -1,20 +1,19 @@
-name: Mirror Public Repository
+name: Mirror Repository
 
 on:
   schedule:
-    # Runs every hour
     - cron: '0 * * * *'
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch:
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
       - name: Mirror Repository
-        uses: wei/git-sync@v3
+        uses: pixta-dev/repository-mirroring-action@v1
         with:
-          source_repo: "https://github.com/GlazedBelmont/es-de-android-custom-systems"
-          source_branch: "main"
-          destination_repo: "git@github.com:admyrick/test.git"
-          destination_branch: "main"
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          target_repo_url: https://${{ secrets.PAT_TOKEN }}@github.com/admyrick/test.git
+          source_repo_url: https://github.com/GlazedBelmont/es-de-android-custom-systems.git
