@@ -1,0 +1,27 @@
+name: Mirror and Sync Repository
+
+on:
+  schedule:
+    # Runs every hour
+    - cron: '0 * * * *'
+  push:
+    branches:
+      - main  # or 'master' depending on your default branch name
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Mirror Repository
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url:
+            git@github.com:ajay9634/Ajay-prefix
+          ssh_private_key:
+            ${{ secrets.SSH_PRIVATE_KEY }}
